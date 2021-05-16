@@ -1,56 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import {FC, useState} from 'react';
+import clsx from 'clsx';
 import './App.css';
+import SettingsPopup from "./features/SettingsPopup/SettingsPopup";
+import Nim from './nim/Nim';
+import Node from './nim/node'
 
-function App() {
+export interface GameSettings {
+    misere: boolean
+    gamesize: number
+    player: number
+}
+
+export const App: FC = () => {
+    const [isVisible, setIsVisible] = useState<boolean>(false)
+    const [settings, setSettings] = useState<GameSettings | {}>({})
+    const node = new Node([5, 8, 13])
+    const nim = new Nim(node);
+    nim.startGame();
+
+    const setCurrentSettings = (arg0: GameSettings) => {
+        setIsVisible(false)
+        setSettings(arg0)
+    }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+    <div className={clsx('App', isVisible && 'App-SettingsPopupOpen')}>
+        <button onClick={ () => setIsVisible(true) }>Settings</button>
+        <SettingsPopup setSettings={ setCurrentSettings } isVisible={ isVisible } />
     </div>
   );
 }
