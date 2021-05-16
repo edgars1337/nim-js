@@ -1,0 +1,18 @@
+.StackWrapper {
+  display: inline-flex;
+
+  &-Table {
+    height: 100%;
+    vertical-align: bottom;
+  }
+
+  td {
+    border: 1px solid black;
+  }
+
+  &-Element {
+    &_isActive {
+      background-color: lightgreen;
+    }
+  }
+}

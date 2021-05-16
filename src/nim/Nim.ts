@@ -24,6 +24,8 @@ export class Nim {
         }
     }
 
+    getCurrentPiles = () => this.state.getPiles();
+
     playerMove = (): void => {
         console.log('----User move----')
         console.log('Current state ', this.state.piles)
@@ -35,7 +37,7 @@ export class Nim {
         console.log('----Computer move----')
         console.log('Current state ', this.state.piles)
         const minimax = this.minimax(this.state, 2, true);
-        const perfectMove = this.state.getChildList().find((n) => n.getHeuristicValue() === minimax);
+        const perfectMove = this.state.getChildList().find((node) => node.getHeuristicValue() === minimax);
         this.state = perfectMove || this.state.getChildList()[0];
         console.log('After Move ', this.state.piles)
     }
