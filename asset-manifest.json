@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/nim-js/static/css/main.7421be3c.chunk.css",
+    "main.js": "/nim-js/static/js/main.3ba31e66.chunk.js",
+    "main.js.map": "/nim-js/static/js/main.3ba31e66.chunk.js.map",
+    "runtime-main.js": "/nim-js/static/js/runtime-main.bde8ef09.js",
+    "runtime-main.js.map": "/nim-js/static/js/runtime-main.bde8ef09.js.map",
+    "static/js/2.5143ba13.chunk.js": "/nim-js/static/js/2.5143ba13.chunk.js",
+    "static/js/2.5143ba13.chunk.js.map": "/nim-js/static/js/2.5143ba13.chunk.js.map",
+    "index.html": "/nim-js/index.html",
+    "static/css/main.7421be3c.chunk.css.map": "/nim-js/static/css/main.7421be3c.chunk.css.map",
+    "static/js/2.5143ba13.chunk.js.LICENSE.txt": "/nim-js/static/js/2.5143ba13.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.bde8ef09.js",
+    "static/js/2.5143ba13.chunk.js",
+    "static/css/main.7421be3c.chunk.css",
+    "static/js/main.3ba31e66.chunk.js"
+  ]
+}
