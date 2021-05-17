@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {FC, useEffect} from 'react';
 import clsx from 'clsx';
 import {StackSize} from '../GameOptions';

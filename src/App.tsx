@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {FC, useState, useEffect, useRef, MutableRefObject} from 'react';
 import clsx from 'clsx';
 import './App.style.scss';
