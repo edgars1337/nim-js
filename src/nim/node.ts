@@ -1,6 +1,7 @@
 import {isEqual} from 'lodash-es';
 
 export class Node {
+    // TODO - fix accesses
     public piles: number[] = [];
     public heuristicValue: number = 0;
     public childList: Node[] = [];
@@ -16,6 +17,7 @@ export class Node {
         }
     }
 
+    // creating a "new" array so in Nim class we aren't editing this nodes array
     getPiles = (): number[] => JSON.parse(JSON.stringify(this.piles));
 
     getChildList = (): Node[] => this.childList;
@@ -26,7 +28,7 @@ export class Node {
         this.heuristicValue = val;
     }
 
-    isEmpty = (): boolean => this.piles?.length === 0;
+    isEmpty = (): boolean => this.piles.every((val) => val === 0);
 
     equals = (givenNode: Node | null): boolean => {
         if (givenNode === this) {

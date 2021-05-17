@@ -2353,7 +2353,7 @@
     "@types/scheduler" "*"
     "csstype" "^3.0.2"
 
-"@types/react@^16", "@types/react@^16.9.0":
+"@types/react@^16", "@types/react@^16.14.6":
   "integrity" "sha512-Ol/aFKune+P0FSFKIgf+XbhGzYGyz0p7g5befSt4rmbzfGLaZR0q7jPew9k7d3bvrcuaL8dPy9Oz3XGZmf9n+w=="
   "resolved" "https://registry.yarnpkg.com/@types/react/-/react-16.14.6.tgz"
   "version" "16.14.6"

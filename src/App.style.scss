@@ -1,0 +1,19 @@
+.App {
+  text-align: center;
+
+  &-WinnerWrapper {
+    margin-top: 30%;
+  }
+
+  &-WhoWon {
+    font-size: 40px;
+    text-transform: uppercase;
+  }
+
+  &-PlayAgainButton {
+    display: block;
+    text-align: center;
+    margin: 15px auto;
+    font-size: 25px;
+  }
+}

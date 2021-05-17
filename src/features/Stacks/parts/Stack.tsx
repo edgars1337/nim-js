@@ -1,25 +1,32 @@
 import {FC, useState} from 'react'
-import clsx from 'clsx';
+import clsx from 'clsx'
+import {USER_MOVE} from '../../../consts';
 import './Stack.style.scss'
 
 export interface StackProps {
     stackSize: number
+    move?: string
+    getPlayerMove: (stack: number, amount: number) => void
+    idx: number
+    coloredRed: number
 }
 
-export const Stack: FC<StackProps> = ({stackSize}) => {
+export const Stack: FC<StackProps> = ({stackSize, move, getPlayerMove, idx, coloredRed}) => {
     const [hoveringElement, setHoveringElement] = useState<number>(-1)
+
     return (
         <div className={clsx('StackWrapper')}>
-            <table className={clsx('StackWrapper-Table')}>
-                <tbody>
-                {[...Array(stackSize).keys()].map((val) => <tr>
-                    <td key={String(val)} id={String(val)} className={clsx('StackWrapper-Element', val <= hoveringElement && 'StackWrapper-Element_isActive')}
+                {[...Array(stackSize).keys()].map((val) =>
+                    <div id={String(val)} className={clsx('StackWrapper-Element', val <= hoveringElement && 'StackWrapper-Element_isActive', val < coloredRed && 'StackWrapper-Element_isRed')}
                         onMouseEnter={({currentTarget: {id}}) => setHoveringElement(Number(id))}
-                        onMouseLeave={() => setHoveringElement(-1)}>yee
-                    </td>
-                </tr>)}
-                </tbody>
-            </table>
+                        onMouseLeave={() => setHoveringElement(-1)}
+                         onClick={({currentTarget: {id}}) => {
+                             if (move === USER_MOVE) {
+                                 getPlayerMove(idx, Number(id))
+                             }
+                         }}
+                    >&nbsp;
+                    </div>)}
         </div>
     )
 }

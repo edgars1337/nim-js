@@ -1,0 +1,20 @@
+.Introduction {
+  font-size: 22px;
+  margin: auto;
+  display: block;
+  max-width: 50%;
+
+  &-Title {
+    font-size: 30px;
+    margin: 20px 0;
+  }
+
+  span {
+    display: block;
+    text-align: center;
+  }
+
+  &-Instructions {
+    margin: 10px auto;
+  }
+}

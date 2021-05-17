@@ -6,7 +6,27 @@
   background-color: grey;
   left: 50%;
   transform: translate(-50%, 0);
-  top: 50%;
+  top: 30%;
+  text-align: left;
+
+  &-StackAmountWrapper,
+  &-StackSizeWrapper {
+    padding: 10px 0;
+  }
+
+  &-StackAmount {
+    margin-right: 10px;
+  }
+
+  &-StartWrapper {
+    margin: auto;
+    width: 100%;
+    text-align: center;
+  }
+
+  &-FirstMoveWrapper {
+    padding-bottom: 20px;
+  }
 
   &_isVisible {
     display: block;

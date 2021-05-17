@@ -7,39 +7,26 @@ export class Nim {
         this.state = state;
     }
 
-    startGame = (): void => {
-        let playerMove = true;
-        while (true) {
-            if (playerMove) {
-                this.playerMove()
-            } else {
-                this.computerMove();
-            }
+    getIsEmpty = (): boolean => this.state.isEmpty();
 
-            if (this.state.isEmpty()) {
-                console.log(playerMove ? 'Player ' : 'Computer ', 'wins')
-                return;
-            }
-            playerMove = !playerMove
-        }
-    }
-
-    getCurrentPiles = () => this.state.getPiles();
-
-    playerMove = (): void => {
-        console.log('----User move----')
+    playerMove = (stack: number, amount: number): number[] => {
+        console.log('User move')
         console.log('Current state ', this.state.piles)
-        this.state = this.move();
+        this.state = this.move(stack, amount);
         console.log('After move ', this.state.piles)
+
+        return this.state.getPiles();
     }
 
-    computerMove = (): void => {
-        console.log('----Computer move----')
+    computerMove = (): number[] => {
+        console.log('Computer move')
         console.log('Current state ', this.state.piles)
         const minimax = this.minimax(this.state, 2, true);
         const perfectMove = this.state.getChildList().find((node) => node.getHeuristicValue() === minimax);
         this.state = perfectMove || this.state.getChildList()[0];
         console.log('After Move ', this.state.piles)
+
+        return this.state.getPiles();
     }
 
     generateChildNodes = (givenNode: Node): Node[] => {
@@ -50,10 +37,12 @@ export class Nim {
         const nodes = [];
         const piles = givenNode.getPiles();
 
+        // TODO - make this code better (more JSish)
         for (let i = 0; i < piles.length; i++) {
             let temp = givenNode.getPiles();
             while (temp[i] > 0) {
                 temp[i] = temp[i] - 1;
+                // for some reason feeding the direct temp stack makes the node id's merge, so we iterate with map to solve it
                 const child = new Node(temp.map(num => num), givenNode);
                 nodes.push(child);
             }
@@ -71,10 +60,12 @@ export class Nim {
             let bestValue = Number.MIN_SAFE_INTEGER
             this.generateChildNodes(givenNode).forEach((child) => {
                 const value = this.minimax(child, depth - 1, false)
+
                 if (value > bestValue) {
                     bestValue = value
                 }
-                child.setHeuristicValue(value);
+
+                child.setHeuristicValue(value)
                 givenNode.setHeuristicValue(bestValue)
             })
 
@@ -83,10 +74,12 @@ export class Nim {
             let bestValue = Number.MAX_SAFE_INTEGER
             this.generateChildNodes(givenNode).forEach((child) => {
                 const value = this.minimax(child, depth - 1, true)
+
                 if (value < bestValue) {
                     bestValue = value
                 }
-                child.setHeuristicValue(value);
+
+                child.setHeuristicValue(value)
                 givenNode.setHeuristicValue(bestValue)
             })
 
@@ -96,15 +89,16 @@ export class Nim {
 
     heuristicEvaluation = (givenNode: Node): number => this.nimSum(givenNode) !== 0 ? 1 : -1;
 
+    nimSum = (givenNode: Node): number => givenNode.getPiles().reduce((acc,val) => (acc ^ val), 0)
 
-    nimSum = (givenNode: Node): number => {
-        let xor = 0;
-        givenNode.getPiles().forEach((val) => xor ^= val);
+    move = (stack: number | null = null, amount: number | null = null): Node => {
+        if (stack !== null && amount !== null) {
+            const stacks = this.state.getPiles();
+            stacks[stack] = stacks[stack] - amount;
+            return new Node(stacks, this.state);
+        }
 
-        return xor;
-    }
-
-    move = (): Node => {
+        // legacy prompt/console interaction code
         while (true) {
             const pile = Number(prompt('choose pile'))
             const piles = this.state.getPiles();
@@ -114,7 +108,7 @@ export class Nim {
             }
             const pileAmount = piles[pile];
 
-            const amount = Number(prompt('chosse amount'))
+            const amount = Number(prompt('choose amount'))
             if (amount < 0 || pileAmount === 0 || pileAmount < amount) {
                 console.log('wrong amount')
                 continue;
