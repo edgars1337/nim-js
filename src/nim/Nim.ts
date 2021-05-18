@@ -21,7 +21,7 @@ export class Nim {
     computerMove = (): number[] => {
         console.log('Computer move')
         console.log('Current state ', this.state.piles)
-        const minimax = this.minimax(this.state, 2, true);
+        const minimax = this.minimax(this.state, 3, true);
         const perfectMove = this.state.getChildList().find((node) => node.getHeuristicValue() === minimax);
         this.state = perfectMove || this.state.getChildList()[0];
         console.log('After Move ', this.state.piles)

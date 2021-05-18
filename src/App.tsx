@@ -9,6 +9,8 @@ import {StackSize} from "./features/GameOptions/GameOptions";
 import Stacks from "./features/Stacks/Stacks";
 import {USER_MOVE, COMPUTER_MOVE} from './consts';
 import Introduction from "./features/Introduction/Introduction";
+import {getChildren} from "./features/OrgChartTree/helpers/generateChartData";
+import OrgChartTree from "./features/OrgChartTree/OrgChartTree";
 
 export const usePrevious = (value: any) => {
     const ref = useRef();
@@ -28,13 +30,13 @@ export const App: FC = () => {
     const [coloredRed, setColoredRed] = useState<StackSize>({})
     const [winner, setWinner] = useState<string>('')
     const [isInstructionShown, setInstructionShow] = useState<boolean>(true)
+    const [tree, setTree] = useState<boolean>(false)
 
     const setStackSize = (size: StackSize) => {
         setStateStackSize(prevState => ({...prevState, ...size}))
     }
 
     const prevStackAmount = usePrevious(stackAmount) || 3;
-    const prevMove = usePrevious(move);
 
     // defining them here to have access in multiple functions
     const nodeRef = useRef<Node>({} as Node);
@@ -48,13 +50,18 @@ export const App: FC = () => {
 
         nodeRef.current = new Node(Object.values(stackSize));
         nimRef.current = new Nim(nodeRef.current);
-
     }
 
     const getPlayerMove = (stack: number, amount: number): void => {
         // amount + 1 due to id's starting from 0
         const result = nimRef.current.playerMove(stack, amount + 1);
         const stacks = result.reduce((acc, val, idx) => ({...acc, [idx]: val}), {})
+
+        if (Object.keys(nimRef?.current)?.length && nimRef.current.getIsEmpty()) {
+            setIsGameStarted(false)
+            setWinner('You win!')
+            return
+        }
 
         setStateStackSize(stacks)
         setMove(COMPUTER_MOVE)
@@ -66,6 +73,19 @@ export const App: FC = () => {
 
         const computerMove = Object.fromEntries(Object.entries(stackSize).map(([key, val]) => [key, val - stacks[key]]))
         setColoredRed(computerMove);
+
+        if (Object.keys(nimRef?.current)?.length && nimRef.current.getIsEmpty()) {
+
+            setTimeout(() => {
+                setColoredRed({})
+                setStateStackSize(stacks)
+                setIsGameStarted(false)
+                setWinner('Computer win!')
+                setMove(USER_MOVE)
+            }, 250)
+
+            return;
+        }
 
         setTimeout(() => {
             setColoredRed({})
@@ -82,13 +102,8 @@ export const App: FC = () => {
     }
 
     useEffect(() => {
-        if (move === COMPUTER_MOVE) {
+        if (move === COMPUTER_MOVE && isGameStarted) {
             getComputerMove()
-        }
-
-        if (Object.keys(nimRef?.current)?.length && nimRef.current.getIsEmpty()) {
-            setIsGameStarted(false)
-            setWinner(prevMove === USER_MOVE ? 'You win!' : 'Computer win!')
         }
     }, [move])
 
@@ -120,6 +135,12 @@ export const App: FC = () => {
                 setIsGameStarted(false)
             }}>Settings
             </button>
+            { nimRef.current?.state?.getPiles()?.length &&
+                <button onClick={() => {
+                    setTree(prevTree => !prevTree)
+                }}>Show Tree from previous computer move
+                </button>
+            }
             { isInstructionShown && <Introduction /> }
             { isVisible && (<GameOptions isVisible={isVisible} startGame={startGame} setStackAmount={setStateStackAmount}
                          setStackSize={setStackSize} stackAmount={stackAmount} stackSize={stackSize} setMove={setMove}/>) }
@@ -131,6 +152,7 @@ export const App: FC = () => {
                     <span className='App-WhoWon'>{winner}</span>
                     <button className='App-PlayAgainButton' onClick={onPlayAgainClick}>Play Again?</button>
             </div>)}
+            { tree && <OrgChartTree hide={ () => setTree(false) } data={ getChildren(nimRef.current.state) } /> }
         </div>
     );
 }

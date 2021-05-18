@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Nim game with stacks",
+  "name": "Nim game with stacks",
   "icons": [
     {
       "src": "favicon.ico",
